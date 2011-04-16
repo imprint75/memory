@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>A Memory Game</title>
+		<link rel="stylesheet" type="text/css" href="memory.css" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+		<script type="text/javascript" src="memory.js"></script>
+		<script>
+		  $(document).ready(function() {
+		    $('#play').change(function(){
+		       console.log(this);
+		       memory.buildBoard($('#play').val());
+		    });
+		  	memory.buildBoard('2');
+		  });
+		</script>
+	</head>
+	<body>
+	  <div id="gameArea">
+	    <select id="play">
+	      <option value=''>Choose a size</option>
+	      <option value='2'>2 X 2</option>
+	      <option value='8'>4 X 4</option>
+	    </select>
+	  <ul id="theDeck"></ul>
+	  </div>
+	</body>
+</html>
