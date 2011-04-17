@@ -2,6 +2,7 @@ body {
      text-align:center;
 }
 
-#gameArea {width: 400px; background-color:#d0e4fe;}
+#gameArea {width: 500px; height: 500px; background-color:#d0e4fe;}
 #theDeck {list-style: none; width: 400px; height: 400px;background-color:blue;}
+#theMatches {list-style: none; float : left;}
 .card {float: left; border: 1px solid black; width: 90px; height: 90px; background-color:green}

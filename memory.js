@@ -8,18 +8,17 @@ memory = {
     guess 	: [],
     
     /*#*#*#*
-      add 2 copies of each element in cards to deck
-      randomize deck
-      lay out on a cube
-      ondocumentready = function(){
-        for( card in this.deck ){
-	  card.click( turn( card.id ) )
-        }
-      }
+     * start with an array of elements 
+     * add 2 copies of each element in cards to deck
+     * randomize deck
+     * attach event handlers to each element in the deck
+     * size the boundary box according to the number of elements
      */
 
+    /**#*#*#**
+    *	add a pair of each card to the deck 
+    */
     buildDeck : function( count ){
-		console.log(count);
 		for( card in this.cards ){
 			if( card < count ) {
 				this.deck.push(this.cards[card]);
@@ -28,81 +27,119 @@ memory = {
 		}
     },
 
+    /**#*#*#**
+    * 	build the playing board 
+    */
     buildBoard : function( dim ) {
     	var that = this;
     	$('#theDeck').html('');
     	memory.deck = [];
     	memory.buildDeck( dim );
-    	// wob = (dim * 100) * (dim/2) + 'px'; 
-    	switch(dim){
-		    case '2':
-			wob = '200px';
-			break;
-		    case '8':
-			wob = '400px';
-			break;
-		    case '18':
-			wob = '900px';
-			break;
-		    default:
-			wob = '600px';
-		}
-
-    	// console.log(wob);
-		$('#theDeck').css('width' , wob );
-
+    	
+    	this.sizeTheBoard(dim);
+    	
+		// randomize the deck
 		memory.deck = memory.fisherYates(memory.deck);
-		// console.log(memory.deck);
 
 		// Handler for .ready() called.
 		for( card in memory.deck ){
-		    $('#theDeck').append('<li id="card' + card  + '" class="card">' + memory.deck[ card ] + ' </li>');
-		    $('#card' + card).click(function(){
+		    $('#theDeck').append('<li id="' + card  + '" class="card" name="' + memory.deck[ card ] + '" class="card"></li>');
+		    $('#' + card).click(function(){
 		    	that.turn(this);
 		    });
 		}
     }, 
+    
+    sizeTheBoard : function(dim) {
+    	// wob = (dim * 100) * (dim/2) + 'px'; 
+    	switch(dim){
+		    case '2':
+		    	wob = '200px';
+				break;
+		    case '8':
+		    	wob = '400px';
+		    	break;
+		    default:
+		    	wob = '600px';
+		}
 
-    // allow the user to select any 2 cards
-    turn : function( guess ){ 
-    	
-		if( this.userTurn < 1 ){
+    	// console.log(wob);
+		$('#theDeck').css('width' , wob );
+    },
 
+    /**#*#*#**
+    * allow the user to select any 2 cards
+    */
+    turn : function( guess ){
+
+    	// turn the square 
+    	this.turnSquare(guess);
+
+    	// if this is the first turn
+    	if( this.userTurn < 1 ){
+
+			// push the value to guess array
 			this.guess.push( $(guess).attr('id') );
-			$(guess).css('background-color', 'red');
+
+			// increase the turn 
 			this.userTurn++;
 
-		} else {			
+		} else {
 
-			// if they match, take the matched cards out of the deck and allow them to select 2 more cards
-			if ( $(guess).html() == $('#' + this.guess[0]).html() ) {
-				console.log('Match!');
-				$(guess).css('background-color', 'yellow');
-				$('#' + this.guess[0]).css('background-color', 'yellow');
-				this.guess = [];
-				this.userTurn = 0;
-			} else {
-				// if not, turn the cards back over 
-				$(guess).css('background-color', 'green');
-				$('#' + this.guess[0]).css('background-color', 'green');
-				console.log('No Match!');
+			// if they match, push the cards to matched
+			if ( $(guess).attr('name') == $('#' + this.guess[0]).attr('name') ) {
+				
+				// push the 2 ids to the matched array
+				this.matches.push( $(guess).attr('id') );
+				this.matches.push( $('#' + this.guess[0]).attr('id') );
+				$('#theMatches').append('<li>' + $(guess).html() + '</li>');
+			
 			}
 
+			this.guess = [];
 			this.userTurn = 0;
+			
+			// whatever happened, reset the board in half a second
+			setTimeout("memory.resetDeck(" + card + ")", 500);
 		}
 		
-	}, 
+    }, 
 
-    fisherYates : function ( myArray ) {
-	    var i = myArray.length;
+    /**#*#*#**
+    * turn a square over 
+    */
+    turnSquare : function( guess ) {
+		// turn square
+		$(guess).html( $(guess).attr('name') );
+		$(guess).css('background-color', 'red');	
+    },
+    
+    resetDeck : function( card ) {
+		for ( card in this.deck) {
+			// if the card is in the matches array, turn it yellow otherwise, turn it green
+			if( this.matches.indexOf(card) != -1 ){
+				$('#' + card).css('background-color', 'yellow');
+				$('#' + card).html( $('#' + card).attr('name') );
+			} else {
+				$('#' + card).css('background-color', 'green');
+				$('#' + card).html('');
+			}
+		}    	
+    },
+    
+    /**#*#*#**
+    * the fisher yates shuffle to randomize the cards
+    */
+    fisherYates : function ( shuffle ) {
+	    var i = shuffle.length;
 	    if ( i == 0 ) return false;
 	    while ( --i ) {
 	        var j = Math.floor( Math.random() * ( i + 1 ) );
-	        var tempi = myArray[i];
-	        var tempj = myArray[j];
-	        myArray[i] = tempj;
-	        myArray[j] = tempi;
+	        var tempi = shuffle[i];
+	        var tempj = shuffle[j];
+	        shuffle[i] = tempj;
+	        shuffle[j] = tempi;
 	    }
-	    return myArray;
+	    return shuffle;
 	}
 };
