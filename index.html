@@ -4,27 +4,43 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<title>A Memory Game</title>
 		<link rel="stylesheet" type="text/css" href="memory.css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+		<script type="text/javascript" src="/Users/seansmith/Downloads/jquery-ui-1.8.11.custom/js/jquery-1.5.1.min.js"></script>
+		<script type="text/javascript" src="/Users/seansmith/Downloads/jquery-ui-1.8.11.custom/js/jquery-ui-1.8.11.custom.min.js"></script>
+		<script type="text/javascript" src="/Users/seansmith/Downloads/jquery-ui-1.8.11.custom/jquery-tmpl/jquery.tmpl.min.js"></script>
 		<script type="text/javascript" src="memory.js"></script>
-		<script>
-		  $(document).ready(function() {
-		    $('#play').change(function(){
-		       console.log(this);
-		       memory.buildBoard($('#play').val());
-		    });
-		  	memory.buildBoard('2');
-		  });
-		</script>
 	</head>
 	<body>
+	  	<table><tr><td>
+	  
 		<div id="gameArea">
-			<select id="play">
-				<option value='' selected=selected>Choose a size</option>
-				<option value='2'>2 X 2</option>
-				<option value='8'>4 X 4</option>
-			</select>
-			<ul id="theDeck"></ul>
-			<ul id="theMatches"></ul>
+		
+			<div id="theBoard">
+				<ul id="theDeck"></ul>
+			</div>
+		
+			<div id="info">
+				<div class="section">
+					New Game <br/>
+					<ul class="infoSection levels">
+						<li class="gameLevel" id="8">Easy</li>
+						<li class="gameLevel" id="12">Intermediate</li>
+						<li class="gameLevel" id="20">Hard</li>
+					</ul>
+				</div>
+		
+				<div class="section">
+					Know your font!<br/>
+					<ul id="theMatches" class="infoSection"></ul>
+				</div>
+		
+				<div class="section">
+					Your highest score: <span class="score">0</span>	      
+				</div>
+		
+			</div>
 		</div>
+
+	  	</td></tr></table>
+		<div class="header"><span>Font Memo</span></div>
 	</body>
 </html>
