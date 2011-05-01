@@ -7,7 +7,7 @@ $(document).ready(function() {
      memory.buildBoard(8);
 });
 
-memory = {
+var memory = {
     userTurn 	: 0,
     cards 	: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
     cardBack    : 'back.png',
